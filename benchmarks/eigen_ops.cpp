@@ -54,4 +54,4 @@ static void BM_inverse(benchmark::State& state)
 BENCHMARK(BM_matmul)->RangeMultiplier(2)->Range(8, 512);
 BENCHMARK(BM_inverse)->RangeMultiplier(2)->Range(8, 512);
 
-BENCHMARK_MAIN();
+BENCHMARK_MAIN()
