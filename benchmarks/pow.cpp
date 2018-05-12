@@ -122,4 +122,4 @@ BENCHMARK_F(fixture, BM_gsl_pow_uint)(benchmark::State& state)
     state.counters["pow(3.14, 3)"] = gsl_pow_uint(3.14, 3);
 }
 
-BENCHMARK_MAIN()
+BENCHMARK_MAIN();
