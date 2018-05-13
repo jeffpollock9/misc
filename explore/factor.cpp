@@ -70,11 +70,6 @@ std::unordered_map<std::string, int> string_int_map(start_index incrementer,
             return BOOST_PP_SEQ_SIZE(LEVELS);                                  \
         }                                                                      \
                                                                                \
-        constexpr levels value() const                                         \
-        {                                                                      \
-            return value_;                                                     \
-        }                                                                      \
-                                                                               \
         constexpr operator int() const                                         \
         {                                                                      \
             return static_cast<int>(value_);                                   \
@@ -97,7 +92,17 @@ std::unordered_map<std::string, int> string_int_map(start_index incrementer,
                                                                                \
     private:                                                                   \
         levels value_;                                                         \
-    };
+    };                                                                         \
+                                                                               \
+    constexpr bool operator==(const NAME& lhs, const NAME::levels& rhs)        \
+    {                                                                          \
+        return lhs == static_cast<int>(rhs);                                   \
+    }                                                                          \
+                                                                               \
+    constexpr bool operator==(const NAME::levels& lhs, const NAME& rhs)        \
+    {                                                                          \
+        return static_cast<int>(lhs) == rhs;                                   \
+    }
 
 FACTOR(cowboy, (good)(bad)(ugly))
 
@@ -114,8 +119,8 @@ int main()
     fmt::print("clint == 0: {}\n", clint == 0);
     fmt::print("1 == lee: {}\n", 1 == lee);
     fmt::print("clint == eli: {}\n", clint == eli);
-    fmt::print("clint.value() == cowboy::levels::good: {}\n",
-               clint.value() == cowboy::levels::good);
+    fmt::print("clint == cowboy::levels::good: {}\n",
+               clint == cowboy::levels::good);
 
     return 0;
 }
