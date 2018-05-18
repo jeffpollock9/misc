@@ -24,9 +24,27 @@ T random(const int n)
     return x;
 }
 
-static void BM_matmul(benchmark::State& state)
+static void BM_matmul_serial(benchmark::State& state)
 {
     const int n = state.range(0);
+
+    Eigen::setNbThreads(1);
+
+    const auto a = random<matrix>(n);
+    const auto b = random<matrix>(n);
+
+    for (auto _ : state)
+    {
+        const matrix c = a * b;
+        benchmark::DoNotOptimize(c);
+    }
+}
+
+static void BM_matmul_8_threads(benchmark::State& state)
+{
+    const int n = state.range(0);
+
+    Eigen::setNbThreads(8);
 
     const auto a = random<matrix>(n);
     const auto b = random<matrix>(n);
@@ -51,7 +69,8 @@ static void BM_inverse(benchmark::State& state)
     }
 }
 
-BENCHMARK(BM_matmul)->RangeMultiplier(2)->Range(8, 512);
+BENCHMARK(BM_matmul_serial)->RangeMultiplier(2)->Range(8, 512);
+BENCHMARK(BM_matmul_8_threads)->RangeMultiplier(2)->Range(8, 512);
 BENCHMARK(BM_inverse)->RangeMultiplier(2)->Range(8, 512);
 
 BENCHMARK_MAIN();
