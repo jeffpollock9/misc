@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.9)
 
 project(misc LANGUAGES CXX CUDA VERSION 0.0.1)
 
@@ -11,7 +11,6 @@ target_compile_options(misc INTERFACE
 target_compile_options(misc_cuda INTERFACE
     -std=c++14 -use_fast_math -arch=sm_61)
 
-find_package(CUDA)
 find_package(OpenMP)
 find_package(Threads)
 find_package(Boost)
