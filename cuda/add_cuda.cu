@@ -21,8 +21,8 @@ void add_cuda(const int n, const float* x, const float* y, float* z)
     float* x_d;
     float* yz_d;
 
-    cudaMalloc((void**)&x_d, size);
-    cudaMalloc((void**)&yz_d, size);
+    cudaMalloc(&x_d, size);
+    cudaMalloc(&yz_d, size);
 
     cudaMemcpy(x_d, x, size, cudaMemcpyHostToDevice);
     cudaMemcpy(yz_d, y, size, cudaMemcpyHostToDevice);
@@ -31,8 +31,6 @@ void add_cuda(const int n, const float* x, const float* y, float* z)
     const int n_blocks   = std::ceil(n / static_cast<float>(block_size));
 
     add_cuda_kernel<<<n_blocks, block_size>>>(n, x_d, yz_d, yz_d);
-
-    cudaDeviceSynchronize();
 
     cudaMemcpy(z, yz_d, size, cudaMemcpyDeviceToHost);
 
