@@ -6,6 +6,7 @@
 #include "add_cpu_openmp.hpp"
 #include "add_cpu_serial.hpp"
 #include "add_cuda.hpp"
+#include "add_thrust.hpp"
 
 constexpr int N = 1 << 20;
 
@@ -74,6 +75,16 @@ BENCHMARK_F(fixture, BM_add_cuda)(benchmark::State& state)
     for (auto _ : state)
     {
         add_cuda(N, x, y, z);
+    }
+
+    add_state_counters(state, x, y, z);
+}
+
+BENCHMARK_F(fixture, BM_add_thrust)(benchmark::State& state)
+{
+    for (auto _ : state)
+    {
+        add_thrust(N, x, y, z);
     }
 
     add_state_counters(state, x, y, z);
