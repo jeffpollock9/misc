@@ -5,11 +5,15 @@ project(misc LANGUAGES CXX CUDA VERSION 0.0.1)
 add_library(misc INTERFACE)
 add_library(misc_cuda INTERFACE)
 
-target_compile_options(misc INTERFACE
-    -std=c++17 -march=native -ffast-math -fdiagnostics-color=always -Wall -Wextra -Wpedantic)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-target_compile_options(misc_cuda INTERFACE
-    -std=c++14 -use_fast_math -arch=sm_61)
+# it's bad to use these non portable flags, but suits me :)
+target_compile_options(misc INTERFACE -march=native -ffast-math -Wall -Wextra -Wpedantic)
+target_compile_features(misc INTERFACE cxx_std_17)
+
+target_compile_options(misc_cuda INTERFACE -use_fast_math -arch=sm_61)
+target_compile_features(misc_cuda INTERFACE cxx_std_14)
 
 find_package(OpenMP)
 find_package(Threads)
@@ -19,8 +23,10 @@ find_package(blaze PATHS "$ENV{HOME}/workspace/blaze/install" NO_DEFAULT_PATH)
 find_package(Eigen3 PATHS "$ENV{HOME}/workspace/eigen/install" NO_DEFAULT_PATH)
 find_package(benchmark PATHS "$ENV{HOME}/workspace/benchmark/install" NO_DEFAULT_PATH)
 find_package(fmt PATHS "$ENV{HOME}/workspace/fmt/install" NO_DEFAULT_PATH)
+find_package(nlohmann_json PATHS "$ENV{HOME}/workspace/nlohmann_json/install" NO_DEFAULT_PATH)
 
 add_subdirectory(benchmarks)
 add_subdirectory(explore)
 add_subdirectory(cuda)
 add_subdirectory(python)
+add_subdirectory(json)
