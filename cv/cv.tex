@@ -1,0 +1,105 @@
+
+\documentclass[11pt, a4paper, sans]{moderncv}
+
+\moderncvtheme{banking} 
+\moderncvcolor{blue}   
+
+\usepackage[scale = 0.75]{geometry}
+\usepackage{url}
+
+\name{Jeffrey}{Pollock}
+
+\address{6/7 Appin Terrace}{Edinburgh}{EH14 1UB}
+\phone[mobile]{07412027903}
+\email{jeffpollock9@gmail.com}
+
+\begin{document}
+
+\makecvtitle
+
+\section{Overview}
+
+\begin{itemize}
+\item Innovative thinker, hard working and interested in practical solutions 
+\item Advanced knowledge of statistical methodology with experience in application
+\item Excellent programming skills including R, C\texttt{++}, Java, MySQL
+\end{itemize}
+
+\section{Education}
+
+\cventry{2012--2015}{PhD, Statistical Modelling}{Heriot Watt University}{Edinburgh}{}{
+\vspace{0.25cm}
+\normalsize 
+\emph{Utility-Based Behaviour Models With Application To The In-Play Tactics Of Association Football Teams}
+\begin{itemize} 
+\item An inhomogeneous Poisson process model for goal times in the English Premier League. The rates at which each team
+scores depends on their current behaviour, which they change depending on time and score during a match, and also
+depending on their current league position
+\item It is shown that separate matches may not be independent, for example news of a goal may become available to a
+different match, which puts one of the teams in the relegation zone, and they change their behaviour in light of this 
+\item Bayesian methods are employed, Markov Chain Monte Carlo (MCMC), Reversible Jump MCMC, and particle filtering
+methods
+\end{itemize}
+}
+
+\vspace{0.25cm}
+
+\cventry{2006--2010}{BSc, First Class, Statistical Modelling}{Heriot Watt University}{Edinburgh}{}{
+\normalsize
+\cvlistdoubleitem{Bayesian inference}{Spatial epidemiology models}
+\cvlistdoubleitem{Generalised extreme value distributions}{R}
+}
+
+\section{Experience}
+
+\cventry{2014}{Data Analyst}{Yes Campaign}{}{}{
+\normalsize
+\begin{itemize}
+\item Processing of messy survey data into a usable format
+\item Building predictive models was able to make recommendations regarding what type of people the campaign should
+target and with what information
+\item After the success of the work I was asked to repeat the analysis on a second survey dataset, which was presented
+to members of the SNP party
+\end{itemize}
+}
+
+\cventry{2010--2012}{Quantitative Analyst}{William Hill}{}{}{
+\normalsize
+\begin{itemize}
+\item Developed statistical models which are used to drive the prices seen on the William Hill website
+\item Implementation of statistical models in Java
+\item Worked (largely alone) on the building and implementation of Ice Hockey models used to calculate
+prices for in-play matches in the NHL and throughout Europe. The model produced a consistent profit
+\item Worked as part of a team on a very large project to derive prices for in-play American Football (NFL), possibly
+the most complex sport which bookmakers consider
+\item Worked as part of a 2-3 man team to a very tight timescale to build and implement a Rugby Union model in time for
+the 2011 Rugby World Cup, and was interviewed by the Sunday Times newspaper regarding it's success
+(\url{http://tinyurl.com/pm5865f})
+\item Also worked on models for other sports including Soccer, Baseball, and Cricket
+\end{itemize}
+}
+
+\section{Skills}
+\textbf{Statistical Modelling}\newline
+\cvlistdoubleitem{Inhomogeneous Poisson Processes}{Gaussian/Poisson/Logistic Regression}
+\cvlistdoubleitem{Generalised Additive Models}{Decision Trees}
+\cvlistdoubleitem{Ridge/Lasso Regression Models}{Mixed Effects Models}
+
+\textbf{Programming}\newline
+\cvlistdoubleitem{R}{C\texttt{++}}
+\cvlistdoubleitem{Java}{MySQL}
+\cvlistdoubleitem{Linux}{Excel/VBA}
+
+\section{Interests}
+
+\begin{itemize}
+\item Interested in Machine Learning techniques and have taken on-line courses in Machine Learning and recommender
+systems
+\item Creator and maintainer of R package 'CompGLM' (on CRAN) which provides efficient functions for the Conway-Maxwell
+Poisson distribution
+\end{itemize}
+
+\cvlistdoubleitem{Olympic Weightlifting}{Guitar}
+\cvlistdoubleitem{Tennis}{Football}
+
+\end{document}
