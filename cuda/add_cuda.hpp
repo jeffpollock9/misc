@@ -3,4 +3,6 @@
 
 void add_cuda(const int n, const float* x, const float* y, float* z);
 
+void add_device_vector(const int n, const float* x, const float* y, float* z);
+
 #endif /* ADD_CUDA_HPP_ */

@@ -37,3 +37,11 @@ void add_cuda(const int n, const float* x, const float* y, float* z)
     cudaFree(x_d);
     cudaFree(yz_d);
 }
+
+void add_device_vector(const int n, const float* x, const float* y, float* z)
+{
+    const int block_size = 256;
+    const int n_blocks   = std::ceil(n / static_cast<float>(block_size));
+
+    add_cuda_kernel<<<n_blocks, block_size>>>(n, x, y, z);
+}
