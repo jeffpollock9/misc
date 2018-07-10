@@ -25,8 +25,7 @@ add_library(add_thrust add_thrust.cu)
 target_link_libraries(add_thrust PRIVATE misc_cuda)
 
 add_executable(benchmark benchmark.cpp)
-target_link_libraries(benchmark
-    misc add_cpu add_gpu add_thrust benchmark::benchmark cuda::cudart cuda::curand)
+target_link_libraries(benchmark misc add_cpu add_gpu add_thrust benchmark::benchmark)
 
-add_executable(device_vector device_vector.cpp)
-target_link_libraries(device_vector misc add_gpu fmt::fmt cuda::cudart cuda::curand)
+add_executable(device_matrix device_matrix.cpp)
+target_link_libraries(device_matrix misc add_gpu fmt::fmt cuda::cudart cuda::curand cuda::cublas)

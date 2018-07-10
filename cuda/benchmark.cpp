@@ -7,7 +7,6 @@
 #include "add_cpu_serial.hpp"
 #include "add_cuda.hpp"
 #include "add_thrust.hpp"
-#include "device_vector.hpp"
 
 constexpr std::size_t N = 1 << 20;
 
@@ -87,22 +86,6 @@ BENCHMARK_F(fixture, BM_add_thrust)(benchmark::State& state)
     {
         add_thrust(N, x, y, z);
     }
-
-    add_state_counters(state, x, y, z);
-}
-
-BENCHMARK_F(fixture, BM_add_device_vector)(benchmark::State& state)
-{
-    const device_vector<float> x_d(x, N);
-    const device_vector<float> y_d(x, N);
-    device_vector<float> z_d(x, N);
-
-    for (auto _ : state)
-    {
-        add(x_d, y_d, z_d);
-    }
-
-    z_d.fill_host(z);
 
     add_state_counters(state, x, y, z);
 }
