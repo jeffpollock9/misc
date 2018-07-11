@@ -1,22 +1,65 @@
 #ifndef DEVICE_MATRIX_HPP_
 #define DEVICE_MATRIX_HPP_
 
-#include <cstddef>
+#include <stdexcept>
+#include <string>
 
 #include <cublas_v2.h>
 #include <cuda_runtime_api.h>
 #include <curand.h>
 
+/////////////////////
+// check_error.hpp //
+/////////////////////
+
+#ifdef __GNUC__
+#define UNLIKELY(x) __builtin_expect(x, 0)
+#endif
+
+inline void check_cuda_error(const cudaError_t code)
+{
+    if (UNLIKELY(code != cudaSuccess))
+    {
+        throw std::runtime_error("cuda error code: " + std::to_string(code));
+    }
+}
+
+inline void check_cublas_error(const cublasStatus_t code)
+{
+    if (UNLIKELY(code != CUBLAS_STATUS_SUCCESS))
+    {
+        throw std::runtime_error("cublas error code: " + std::to_string(code));
+    }
+}
+
+inline void check_curand_error(const curandStatus_t code)
+{
+    if (UNLIKELY(code != CURAND_STATUS_SUCCESS))
+    {
+        throw std::runtime_error("curand error code: " + std::to_string(code));
+    }
+}
+
+#undef UNLIKELY
+
+///////////////////////
+// cublas_handle.hpp //
+///////////////////////
+
 struct cublas_handle_wrapper
 {
     cublas_handle_wrapper()
     {
-        cublasCreate(&handle_);
+        const auto code = cublasCreate(&handle_);
+
+        check_cublas_error(code);
     }
 
     ~cublas_handle_wrapper()
     {
-        cublasDestroy(handle_);
+        const auto code = cublasDestroy(handle_);
+
+        check_cublas_error(code);
     }
 
     cublasHandle_t& value()
@@ -34,16 +77,25 @@ cublas_handle_wrapper& cublas_handle()
     return handle;
 }
 
+//////////////////////////
+// curand_generator.hpp //
+//////////////////////////
+
 struct curand_generator_wrapper
 {
     curand_generator_wrapper()
     {
-        curandCreateGenerator(&gen_, CURAND_RNG_PSEUDO_DEFAULT);
+        const auto code =
+            curandCreateGenerator(&gen_, CURAND_RNG_PSEUDO_DEFAULT);
+
+        check_curand_error(code);
     }
 
     ~curand_generator_wrapper()
     {
-        curandDestroyGenerator(gen_);
+        const auto code = curandDestroyGenerator(gen_);
+
+        check_curand_error(code);
     }
 
     curandGenerator_t& value()
@@ -51,54 +103,80 @@ struct curand_generator_wrapper
         return gen_;
     }
 
-    void seed(unsigned long long seed = 0xdeadbeef)
+    void seed(const unsigned long long seed   = 0xdeadbeef,
+              const unsigned long long offset = 0)
     {
-        curandSetPseudoRandomGeneratorSeed(gen_, seed);
+        const auto seed_code = curandSetPseudoRandomGeneratorSeed(gen_, seed);
+
+        check_curand_error(seed_code);
+
+        const auto offset_code = curandSetGeneratorOffset(gen_, offset);
+
+        check_curand_error(offset_code);
     }
 
 private:
     curandGenerator_t gen_;
 };
 
-curand_generator_wrapper& curand_rng()
+inline curand_generator_wrapper& curand_gen()
 {
-    static curand_generator_wrapper generator;
-    return generator;
+    static curand_generator_wrapper gen;
+    return gen;
 }
 
-void fill_random_uniform(float* const data, const std::size_t size)
+////////////////
+// random.hpp //
+////////////////
+
+inline void fill_random_uniform(float* const data, const int size)
 {
-    curandGenerateUniform(curand_rng().value(), data, size);
+    const auto code = curandGenerateUniform(curand_gen().value(), data, size);
+
+    check_curand_error(code);
 }
 
-void fill_random_uniform(double* const data, const std::size_t size)
+inline void fill_random_uniform(double* const data, const int size)
 {
-    curandGenerateUniformDouble(curand_rng().value(), data, size);
+    const auto code =
+        curandGenerateUniformDouble(curand_gen().value(), data, size);
+
+    check_curand_error(code);
 }
+
+///////////////////////
+// device_matrix.hpp //
+///////////////////////
 
 template <typename T>
 struct device_matrix
 {
-    device_matrix(const std::size_t rows, const std::size_t cols)
-        : rows_(rows), cols_(cols)
+    device_matrix() = default;
+
+    device_matrix(const int rows, const int cols) : rows_(rows), cols_(cols)
     {
-        cudaMalloc((void**)&data_, bytes());
+        const auto code = cudaMalloc((void**)&data_, bytes());
+
+        check_cuda_error(code);
     }
 
-    device_matrix(const T* const host,
-                  const std::size_t rows,
-                  const std::size_t cols)
+    device_matrix(const T* const host, const int rows, const int cols)
         : device_matrix(rows, cols)
     {
-        cudaMemcpy(data(), host, bytes(), cudaMemcpyHostToDevice);
+        const auto code =
+            cudaMemcpy(data(), host, bytes(), cudaMemcpyHostToDevice);
+
+        check_cuda_error(code);
     }
 
     ~device_matrix()
     {
-        cudaFree(data());
+        const auto code = cudaFree(data());
+
+        check_cuda_error(code);
     }
 
-    static device_matrix random(const std::size_t rows, const std::size_t cols)
+    static device_matrix random(const int rows, const int cols)
     {
         device_matrix x(rows, cols);
 
@@ -107,22 +185,22 @@ struct device_matrix
         return x;
     }
 
-    std::size_t rows() const
+    int rows() const
     {
         return rows_;
     }
 
-    std::size_t cols() const
+    int cols() const
     {
         return cols_;
     }
 
-    std::size_t size() const
+    int size() const
     {
         return rows() * cols();
     }
 
-    std::size_t bytes() const
+    int bytes() const
     {
         return size() * sizeof(T);
     }
@@ -138,31 +216,97 @@ struct device_matrix
     }
 
 private:
-    T* data_          = nullptr;
-    std::size_t rows_ = 0;
-    std::size_t cols_ = 0;
+    T* data_  = nullptr;
+    int rows_ = 0;
+    int cols_ = 0;
 };
 
 template <typename T>
-void copy(const device_matrix<T>& device, T* const host)
+inline void copy(const device_matrix<T>& device, T* const host)
 {
-    cudaMemcpy(host, device.data(), device.bytes(), cudaMemcpyDeviceToHost);
+    const auto code =
+        cudaMemcpy(host, device.data(), device.bytes(), cudaMemcpyDeviceToHost);
+
+    check_cuda_error(code);
 }
 
-void axpy(const double alpha,
-          const device_matrix<double> x,
-          device_matrix<double>& y)
+inline void axpy(const double alpha,
+                 const device_matrix<double>& x,
+                 device_matrix<double>& y)
 {
-    cublasDaxpy_v2(
+    const auto code = cublasDaxpy(
         cublas_handle().value(), x.size(), &alpha, x.data(), 1, y.data(), 1);
+
+    check_cublas_error(code);
 }
 
-void axpy(const float alpha,
-          const device_matrix<float> x,
-          device_matrix<float>& y)
+inline void
+axpy(const float alpha, const device_matrix<float>& x, device_matrix<float>& y)
 {
-    cublasSaxpy_v2(
+    const auto code = cublasSaxpy(
         cublas_handle().value(), x.size(), &alpha, x.data(), 1, y.data(), 1);
+
+    check_cublas_error(code);
+}
+
+inline void gemm(const double alpha,
+                 const device_matrix<double>& A,
+                 const device_matrix<double>& B,
+                 const double beta,
+                 device_matrix<double>& C)
+{
+    const int m = A.rows();
+    const int n = B.cols();
+    const int k = A.cols();
+
+    const int ld = 1;
+
+    const auto code = cublasDgemm(cublas_handle().value(),
+                                  CUBLAS_OP_N,
+                                  CUBLAS_OP_N,
+                                  m,
+                                  n,
+                                  k,
+                                  &alpha,
+                                  A.data(),
+                                  ld,
+                                  B.data(),
+                                  ld,
+                                  &beta,
+                                  C.data(),
+                                  ld);
+
+    check_cublas_error(code);
+}
+
+inline void gemm(const float alpha,
+                 const device_matrix<float>& A,
+                 const device_matrix<float>& B,
+                 const float beta,
+                 device_matrix<float>& C)
+{
+    const int m = A.rows();
+    const int n = B.cols();
+    const int k = A.cols();
+
+    const int ld = 1;
+
+    const auto code = cublasSgemm(cublas_handle().value(),
+                                  CUBLAS_OP_N,
+                                  CUBLAS_OP_N,
+                                  m,
+                                  n,
+                                  k,
+                                  &alpha,
+                                  A.data(),
+                                  ld,
+                                  B.data(),
+                                  ld,
+                                  &beta,
+                                  C.data(),
+                                  ld);
+
+    check_cublas_error(code);
 }
 
 #endif /* DEVICE_MATRIX_HPP_ */

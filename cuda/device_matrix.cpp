@@ -36,10 +36,10 @@ int main()
         std::vector<float> x_h(n);
         std::vector<float> y_h(n);
 
-        curand_rng().seed(42);
+        curand_gen().seed(42);
         auto x = device_matrix<float>::random(n, 1);
 
-        curand_rng().seed(42);
+        curand_gen().seed(42);
         auto y = device_matrix<float>::random(n, 1);
 
         copy(x, x_h.data());
