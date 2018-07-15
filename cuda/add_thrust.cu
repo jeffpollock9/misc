@@ -4,7 +4,10 @@
 #include <thrust/device_vector.h>
 #include <thrust/transform.h>
 
-void add_thrust(const int n, const float* x, const float* y, float* z)
+void add_thrust(const int n,
+                const float* const x,
+                const float* const y,
+                float* const z)
 {
     thrust::device_vector<float> x_d(x, x + n);
     thrust::device_vector<float> yz_d(y, y + n);

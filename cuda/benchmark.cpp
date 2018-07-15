@@ -8,7 +8,7 @@
 #include "add_cuda.hpp"
 #include "add_thrust.hpp"
 
-constexpr int N = 1 << 20;
+constexpr std::size_t N = 1 << 20;
 
 struct fixture : benchmark::Fixture
 {

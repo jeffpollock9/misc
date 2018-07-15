@@ -7,3 +7,9 @@ target_link_libraries(avx misc fmt::fmt)
 
 add_executable(factor factor.cpp)
 target_link_libraries(factor misc fmt::fmt Boost::boost)
+
+add_executable(fmt fmt.cpp)
+target_link_libraries(fmt misc fmt::fmt)
+
+add_executable(bad_pointer bad_pointer.cpp)
+target_link_libraries(bad_pointer misc fmt::fmt)
