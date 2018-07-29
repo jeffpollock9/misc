@@ -12,8 +12,8 @@ x = range(4)
 
 start = tm.time()
 
-with cf.ThreadPoolExecutor() as executor:
-    results = [y for y in executor.map(f, x)]
+with cf.ThreadPoolExecutor(mp.cpu_count()) as executor:
+    results = list(executor.map(f, x))
 
 end = tm.time()
 
