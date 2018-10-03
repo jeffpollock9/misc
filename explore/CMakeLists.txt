@@ -13,3 +13,6 @@ target_link_libraries(fmt misc fmt::fmt)
 
 add_executable(bad_pointer bad_pointer.cpp)
 target_link_libraries(bad_pointer misc fmt::fmt)
+
+add_executable(match match.cpp)
+target_link_libraries(match misc fmt::fmt)

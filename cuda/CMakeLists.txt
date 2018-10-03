@@ -1,18 +1,23 @@
 
+add_library(misc_cuda INTERFACE)
+
+target_compile_options(misc_cuda INTERFACE -use_fast_math -arch=sm_61)
+target_compile_features(misc_cuda INTERFACE cxx_std_14)
+
 # TODO: figure out a better way
 add_library(cuda::cudart SHARED IMPORTED)
 set_target_properties(cuda::cudart PROPERTIES
-    IMPORTED_LOCATION "/usr/local/cuda-9.1/targets/x86_64-linux/lib/libcudart.so"
+    IMPORTED_LOCATION "/usr/local/cuda-10.0/targets/x86_64-linux/lib/libcudart.so"
     INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}")
 
 add_library(cuda::curand SHARED IMPORTED)
 set_target_properties(cuda::curand PROPERTIES
-    IMPORTED_LOCATION "/usr/local/cuda-9.1/targets/x86_64-linux/lib/libcurand.so"
+    IMPORTED_LOCATION "/usr/local/cuda-10.0/targets/x86_64-linux/lib/libcurand.so"
     INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}")
 
 add_library(cuda::cublas SHARED IMPORTED)
 set_target_properties(cuda::cublas PROPERTIES
-    IMPORTED_LOCATION "/usr/local/cuda-9.1/targets/x86_64-linux/lib/libcublas.so"
+    IMPORTED_LOCATION "/usr/local/cuda-10.0/targets/x86_64-linux/lib/libcublas.so"
     INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}")
 
 add_library(add_cpu add_cpu_serial.cpp add_cpu_openmp.cpp)
