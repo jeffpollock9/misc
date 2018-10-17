@@ -16,3 +16,6 @@ target_link_libraries(bad_pointer misc fmt::fmt)
 
 add_executable(match match.cpp)
 target_link_libraries(match misc fmt::fmt)
+
+add_executable(sample sample.cpp)
+target_link_libraries(sample misc fmt::fmt)
