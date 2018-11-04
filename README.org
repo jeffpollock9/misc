@@ -1,0 +1,55 @@
+#+TITLE: Miscellaneous bits and bobs!
+#+AUTHOR: Jeff
+
+A dumping ground repository for learning stuff (including how to write using
+org-mode).
+
+* Some code snippets!
+
+Here is some python:
+
+#+BEGIN_SRC python :results output :exports both
+  import os
+  print(os.getcwd())
+#+END_SRC
+
+#+RESULTS:
+: /home/jeff/workspace/misc/misc
+
+Here is some R:
+
+#+NAME: plot
+#+BEGIN_SRC R :results output graphics :exports both :file plot.png
+  library(GGally)
+  ggpairs(iris)
+#+END_SRC  
+
+#+RESULTS: plot
+[[file:plot.png]]
+
+Here is some C++:
+
+#+BEGIN_SRC C++ :exports both
+  #include <iostream>
+  int main()
+  {
+      std::cout << "Hello world!\n";
+  }
+#+END_SRC
+
+#+RESULTS:
+: Hello world!
+
+* Some TODOs!
+
+** TODO learn how org mode works
+
+** DONE start this document
+CLOSED: [2018-11-04 Sun 18:54]
+
+** DONE add a checklist
+CLOSED: [2018-11-04 Sun 19:58]
+
+*** here is a list! [1/2] 
+1. [X] foo
+2. [ ] bar
