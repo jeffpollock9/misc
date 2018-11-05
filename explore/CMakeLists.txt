@@ -19,3 +19,7 @@ target_link_libraries(match misc fmt::fmt)
 
 add_executable(sample sample.cpp)
 target_link_libraries(sample misc fmt::fmt)
+
+add_executable(spdlog spdlog.cpp)
+target_link_libraries(spdlog misc spdlog::spdlog)
+target_compile_definitions(spdlog PRIVATE SPDLOG_TRACE_ON SPDLOG_DEBUG_ON)

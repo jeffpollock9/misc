@@ -20,6 +20,7 @@ find_package(Eigen3 PATHS "$ENV{HOME}/workspace/eigen/install" NO_DEFAULT_PATH)
 find_package(benchmark PATHS "$ENV{HOME}/workspace/benchmark/install" NO_DEFAULT_PATH)
 find_package(fmt PATHS "$ENV{HOME}/workspace/fmt/install" NO_DEFAULT_PATH)
 find_package(nlohmann_json PATHS "$ENV{HOME}/workspace/nlohmann_json/install" NO_DEFAULT_PATH)
+find_package(spdlog  PATHS "$ENV{HOME}/workspace/spdlog/install" NO_DEFAULT_PATH)
 
 list(APPEND CMAKE_PREFIX_PATH "$ENV{HOME}/workspace/libtorch-shared-with-deps-latest/libtorch")
 find_package(Torch)
