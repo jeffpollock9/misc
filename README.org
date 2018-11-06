@@ -33,12 +33,24 @@ Here is some C++:
   #include <iostream>
   int main()
   {
-      std::cout << "Hello world!\n";
+      std::cout << "Hello world (from C++)!\n";
   }
 #+END_SRC
 
 #+RESULTS:
-: Hello world!
+: Hello world (from C++)!
+
+#+HEADERS: :classname HelloWorld
+#+BEGIN_SRC java :exports both
+  public class HelloWorld {
+      public static void main(String[] args) {
+          System.out.println("Hello world (from java)!");
+      }
+  }
+#+END_SRC
+
+#+RESULTS:
+: Hello world (from java)!
 
 * Some TODOs!
 
