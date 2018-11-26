@@ -54,24 +54,24 @@ Here is some C++:
   #include <iostream>
   int main()
   {
-      std::cout << "Hello lavka I fancy you lots! (from C++)!\n";
+      std::cout << "Hello world (from C++)!\n";
   }
 #+END_SRC
 
 #+RESULTS:
-: Hello lavka I fancy you lots! (from C++)!
+: Hello world (from C++)!
 
 #+HEADERS: :classname HelloWorld
 #+BEGIN_SRC java :exports both
   public class HelloWorld {
       public static void main(String[] args) {
-          System.out.println("Hello I fancy lavka too (from java)!");
+          System.out.println("Hello world (from java)!");
       }
   }
 #+END_SRC
 
 #+RESULTS:
-: Hello I fancy lavka too (from java)!1
+: Hello world (from java)!
 * Some latex                                                          :latex:
 
 here is some LaTeX:
