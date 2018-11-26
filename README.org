@@ -1,10 +1,31 @@
 #+TITLE: Miscellaneous bits and bobs!
 #+AUTHOR: Jeff
+#+HTML_HEAD_EXTRA: <style>pre { background-color: #3f3f3f; color: #dcdccc; }</style>
 
 A dumping ground repository for learning stuff (including how to write using
 org-mode).
 
-* Some code snippets!
+* Some TODOs!                                                          :misc:
+
+** TODO learn how org mode works
+SCHEDULED: <2018-11-27 Tue +1d>
+:PROPERTIES:
+:LAST_REPEAT: [2018-11-20 Tue 18:44]
+:END:
+
+- State "DONE"       from "TODO"       [2018-11-20 Tue 18:44]
+- State "DONE"       from "TODO"       [2018-11-20 Tue 18:44]
+** TODO start this document
+SCHEDULED: <2018-11-27 Tue>
+
+** DONE add a checklist
+CLOSED: [2018-11-20 Tue 18:41] SCHEDULED: <2018-11-19 Mon>
+
+*** here is a list! [1/2] 
+1. [X] foo
+2. [ ] bar
+
+* Some code snippets!                                                  :code:
 
 Here is some python:
 
@@ -33,35 +54,65 @@ Here is some C++:
   #include <iostream>
   int main()
   {
-      std::cout << "Hello world (from C++)!\n";
+      std::cout << "Hello lavka I fancy you lots! (from C++)!\n";
   }
 #+END_SRC
 
 #+RESULTS:
-: Hello world (from C++)!
+: Hello lavka I fancy you lots! (from C++)!
 
 #+HEADERS: :classname HelloWorld
 #+BEGIN_SRC java :exports both
   public class HelloWorld {
       public static void main(String[] args) {
-          System.out.println("Hello world (from java)!");
+          System.out.println("Hello I fancy lavka too (from java)!");
       }
   }
 #+END_SRC
 
 #+RESULTS:
-: Hello world (from java)!
+: Hello I fancy lavka too (from java)!1
+* Some latex                                                          :latex:
 
-* Some TODOs!
+here is some LaTeX:
 
-** TODO learn how org mode works
+foo \(\omega\) bar
 
-** DONE start this document
-CLOSED: [2018-11-04 Sun 18:54]
+#+BEGIN_LATEX latex
+\begin{equation}
+\dot{\theta} \bar{\pi} \hat{\tau} \vec{\cup} \delta
+\end{equation}
+#+END_LATEX
 
-** DONE add a checklist
-CLOSED: [2018-11-04 Sun 19:58]
+#+BEGIN_LATEX latex
+\begin{align}
+X \sim N(0, 1)
+\end{align}
+#+END_LATEX
+* A table                                                             :table:
 
-*** here is a list! [1/2] 
-1. [X] foo
-2. [ ] bar
+| foo            | bar     | baz               | hehe    |
+|----------------+---------+-------------------+---------|
+| more lines     | ....... | it is quite smart |         |
+| some long text | 2       | 3                 | whaaaat |
+
+| col1 | col2 | sum |
+|------+------+-----|
+|    1 |    2 |   3 |
+|   10 |    2 |  12 |
+|    1 |    2 |   3 |
+#+TBLFM: $3=$1+$2
+
+table from the help...
+
+|---+-------------+---+-----+--------------------------------------|
+|   | Func        | n | x   | Result                               |
+|---+-------------+---+-----+--------------------------------------|
+| # | exp(x)      | 1 | x   | 1 + x                                |
+| # | exp(x)      | 2 | x   | 1 + x + x^2 / 2                      |
+| # | exp(x)      | 3 | x   | 1 + x + x^2 / 2 + x^3 / 6            |
+| # | x^2+sqrt(x) | 2 | x=0 | x*(0.5 / 0) + x^2 (2 - 0.25 / 0) / 2 |
+| # | x^2+sqrt(x) | 2 | x=1 | 2 + 2.5 x - 2.5 + 0.875 (x - 1)^2    |
+| * | tan(x)      | 3 | x   | x pi / 180 + 5.716e-8 x^3 pi^3       |
+|---+-------------+---+-----+--------------------------------------|
+#+TBLFM: $5=taylor($2,$4,$3);n4
